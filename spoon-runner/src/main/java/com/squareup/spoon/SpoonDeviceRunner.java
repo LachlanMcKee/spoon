@@ -190,11 +190,12 @@ public final class SpoonDeviceRunner {
 
     // Now install the main application and the instrumentation application.
     try {
-      String extraArgument = "";
+      List<String> extraArgument = new ArrayList<String>(2);
+      extraArgument.add("-t"); // Required to allow the APK to tested once installed.
       if (grantAll && deviceDetails.getApiLevel() >= DeviceDetails.MARSHMALLOW_API_LEVEL) {
-        extraArgument = "-g";
+        extraArgument.add("-g");
       }
-      device.installPackage(apk.getAbsolutePath(), true, extraArgument);
+      device.installPackage(apk.getAbsolutePath(), true, extraArgument.toArray(new String[extraArgument.size()]));
     } catch (InstallException e) {
       logInfo("InstallException while install app apk on device [%s]", serial);
       e.printStackTrace(System.out);
